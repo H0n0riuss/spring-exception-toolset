@@ -14,6 +14,8 @@
 	<properties>
 		<java.version>17</java.version>
 		<springboot.version>3.0.6</springboot.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 
 	<licenses>
