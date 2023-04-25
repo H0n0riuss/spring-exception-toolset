@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>de.enosis</groupId>
+	<groupId>io.github.H0n0riuss</groupId>
 	<artifactId>spring-exception-toolset</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 
 	<name>spring-exception-toolset</name>
 	<description>Nice and convenient exception handling</description>
@@ -16,6 +16,7 @@
 		<springboot.version>3.0.6</springboot.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<licenses>
