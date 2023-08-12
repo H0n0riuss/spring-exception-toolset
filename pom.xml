@@ -5,7 +5,7 @@
 
 	<groupId>io.github.H0n0riuss</groupId>
 	<artifactId>spring-exception-toolset</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.3</version>
 
 	<name>spring-exception-toolset</name>
 	<description>Nice and convenient exception handling</description>
