@@ -6,5 +6,6 @@ Nice and convenient exception handling
 2. Let Spring Boot scan this package:
 ```java
  @SpringBootApplication(scanBasePackages = {
+         "your.own.package",
          "io.github.honoriuss"})
 ```
