@@ -4,21 +4,18 @@ import io.github.honoriuss.springexceptiontoolset.exceptions.models.ApiErrorMode
 import io.github.honoriuss.springexceptiontoolset.exceptions.models.ApiUrlErrorModel;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;
 
 @Service
 public class BaseExceptionService {
-    @Value("${exception-toolset.api-error.include-url}")
+    @Value("${exception-toolset.api-error.include-url:true}")
     private boolean showUrl;
 
-    public ResponseEntity<ApiErrorModel> createApiErrorMessage(String message, WebRequest webRequest, HttpServletRequest servletRequest) {
-        var apiErrorModel = showUrl
+    public ApiErrorModel createApiErrorMessage(String message, WebRequest webRequest, HttpServletRequest servletRequest) {
+        return showUrl
                 ? getApiErrorUrlModel(message, webRequest, servletRequest)
                 : new ApiErrorModel(message);
-        return new ResponseEntity<>(apiErrorModel, HttpStatus.BAD_REQUEST);
     }
 
     private ApiUrlErrorModel getApiErrorUrlModel(String message, WebRequest webRequest, HttpServletRequest servletRequest) {
