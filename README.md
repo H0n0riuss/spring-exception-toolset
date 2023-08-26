@@ -9,3 +9,11 @@ Nice and convenient exception handling
          "your.own.package",
          "io.github.honoriuss"})
 ```
+
+## Features
+1. Don`t want to show the requested url in the handling? Override it in you application.yaml:
+```yaml 
+exception-toolset:
+  api-error:
+    include-url: false
+```
