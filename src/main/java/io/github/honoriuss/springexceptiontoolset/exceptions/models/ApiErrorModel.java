@@ -1,11 +1,9 @@
 package io.github.honoriuss.springexceptiontoolset.exceptions.models;
 
-public class ApiError {
-    public String uri;
+public class ApiErrorModel {
     public String message;
 
-    public ApiError(String uri, String message) {
-        this.uri = uri;
+    public ApiErrorModel(String message) {
         this.message = message;
     }
 }

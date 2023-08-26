@@ -1,0 +1,3 @@
+exception-toolset:
+  api-error:
+    include-url: true
