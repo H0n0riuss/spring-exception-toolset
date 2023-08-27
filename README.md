@@ -11,9 +11,11 @@ Nice and convenient exception handling
 ```
 
 ## Features
-1. Don`t want to show the requested url in the handling? Override it in you application.yaml:
+1. You can override (customize) some properties in your application.yaml:
 ```yaml 
 exception-toolset:
   api-error:
     include-url: false
+    include-client-info: false
+    http-status-code: 400
 ```
