@@ -2,3 +2,4 @@ exception-toolset:
   api-error:
     include-url: true
     include-client-info: false
+    http-status-code: 400
