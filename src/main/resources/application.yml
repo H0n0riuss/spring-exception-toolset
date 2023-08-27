@@ -1,3 +1,4 @@
 exception-toolset:
   api-error:
     include-url: true
+    include-client-info: false
