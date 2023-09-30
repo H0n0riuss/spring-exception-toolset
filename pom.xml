@@ -5,17 +5,18 @@
 
 	<groupId>io.github.H0n0riuss</groupId>
 	<artifactId>spring-exception-toolset</artifactId>
-	<version>0.0.7_11</version>
+	<version>0.0.9_17_x</version>
 
 	<name>spring-exception-toolset</name>
 	<description>Nice and convenient exception handling</description>
 	<url>https://github.com/H0n0riuss/spring-exception-toolset</url>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
+		<project.version>0.0.9_17_x</project.version>
 		<springboot.version>3.1.3</springboot.version>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -132,6 +133,22 @@
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>io.github.H0n0riuss</groupId>
+							<artifactId>spring-exception-toolset</artifactId>
+							<version>${project.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 		</plugins>

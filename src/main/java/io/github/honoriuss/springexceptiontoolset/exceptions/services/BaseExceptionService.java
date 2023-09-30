@@ -10,9 +10,9 @@ import org.springframework.web.context.request.WebRequest;
 
 @Service
 public class BaseExceptionService {
-    @Value("${exception-toolset.api-error.include-url:true}")
+    @Value("${exception-toolset.api-error.include-url}")
     private boolean showUrl;
-    @Value("${exception-toolset.api-error.include-client-info:false}")
+    @Value("${exception-toolset.api-error.include-client-info}")
     private boolean includeClientInfo;
 
     public ApiErrorModel createApiErrorMessage(String message, WebRequest webRequest, HttpServletRequest servletRequest) {
