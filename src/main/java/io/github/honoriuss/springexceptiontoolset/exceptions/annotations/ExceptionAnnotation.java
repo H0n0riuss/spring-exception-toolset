@@ -1,4 +1,4 @@
-package io.github.honoriuss.springexceptiontoolset.annotations;
+package io.github.honoriuss.springexceptiontoolset.exceptions.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,5 +8,4 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
 public @interface ExceptionAnnotation {
-    String value();
 }

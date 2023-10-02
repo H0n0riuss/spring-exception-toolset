@@ -2,10 +2,8 @@ package io.github.honoriuss.springexceptiontoolset.exceptions.services;
 
 import io.github.honoriuss.springexceptiontoolset.exceptions.models.ApiErrorModel;
 import io.github.honoriuss.springexceptiontoolset.exceptions.models.ApiUrlErrorModel;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.web.context.request.WebRequest;
 
 @Service
@@ -15,21 +13,17 @@ public class BaseExceptionService {
     @Value("${exception-toolset.api-error.include-client-info}")
     private boolean includeClientInfo;
 
-    public ApiErrorModel createApiErrorMessage(String message, WebRequest webRequest, HttpServletRequest servletRequest) {
+    public ApiErrorModel createApiErrorMessage(String message, WebRequest webRequest) {
         return showUrl
-                ? getApiErrorUrlModel(message, webRequest, servletRequest)
+                ? getApiErrorUrlModel(message, webRequest)
                 : new ApiErrorModel(message);
     }
 
-    private ApiUrlErrorModel getApiErrorUrlModel(String message, WebRequest webRequest, HttpServletRequest servletRequest) {
-        return new ApiUrlErrorModel(message, getUrl(webRequest, servletRequest));
+    private ApiUrlErrorModel getApiErrorUrlModel(String message, WebRequest webRequest) {
+        return new ApiUrlErrorModel(message, getUrl(webRequest));
     }
 
-    private String getUrl(WebRequest webRequest, HttpServletRequest servletRequest) {
-        if (webRequest != null) {
-            return webRequest.getDescription(includeClientInfo);
-        }
-        Assert.notNull(servletRequest, "webRequest and HttpServletRequest are null.");
-        return servletRequest.getRequestURI();
+    private String getUrl(WebRequest webRequest) {
+        return webRequest.getDescription(includeClientInfo);
     }
 }

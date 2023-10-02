@@ -2,7 +2,6 @@ package io.github.honoriuss.springexceptiontoolset.exceptions.handler.abstracts;
 
 import io.github.honoriuss.springexceptiontoolset.exceptions.models.ApiErrorModel;
 import io.github.honoriuss.springexceptiontoolset.exceptions.services.BaseExceptionService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +19,9 @@ public abstract class ABaseExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorModel> handleException(Exception ex,
-                                                         WebRequest webRequest,
-                                                         HttpServletRequest servletRequest) {
+                                                         WebRequest webRequest) {
         return new ResponseEntity<>(
-                baseExceptionService.createApiErrorMessage(ex.getMessage(), webRequest, servletRequest),
+                baseExceptionService.createApiErrorMessage(ex.getMessage(), webRequest),
                 HttpStatus.valueOf(httpStatusCode));
     }
 }
