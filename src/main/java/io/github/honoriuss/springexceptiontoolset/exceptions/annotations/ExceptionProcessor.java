@@ -1,6 +1,12 @@
 package io.github.honoriuss.springexceptiontoolset.exceptions.annotations;
 
 import com.google.auto.service.AutoService;
+import com.sun.source.tree.BlockTree;
+import com.sun.source.tree.MethodTree;
+import com.sun.source.tree.StatementTree;
+import com.sun.source.util.TreePath;
+import com.sun.source.util.TreePathScanner;
+import com.sun.source.util.Trees;
 import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.TypeName;
@@ -11,75 +17,66 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
+import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Set;
+
+import javax.annotation.processing.*;
+import javax.annotation.processing.*;
+import javax.lang.model.*;
+import javax.lang.model.element.*;
+import javax.lang.model.util.*;
+import com.sun.source.tree.*;
+import com.sun.source.util.*;
+import java.util.*;
 
 import java.io.*;
 
 import static java.util.stream.Collectors.joining;
 
-@SupportedAnnotationTypes("io.github.honoriuss.springexceptiontoolset.exceptions.annotations.ExceptionAnnotation")
+@SupportedAnnotationTypes("*")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 @AutoService(Processor.class)
 public class ExceptionProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        System.out.println("Halloooo");
         for (Element element : roundEnv.getElementsAnnotatedWith(ExceptionAnnotation.class)) {
             if (element.getKind() == ElementKind.METHOD) {
-                ExecutableElement methodElement = (ExecutableElement) element;
-                TypeElement typeElement = (TypeElement) element.getEnclosingElement();
-                String packageName = processingEnv.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
-
-                // Hier erstellst du den neuen Code mit JavaPoet
-                String methodName = methodElement.getSimpleName().toString();
-                String consoleOutput = String.format("System.out.println(\"Methode %s wird aufgerufen\");", methodName);
-
-                MethodSpec existingMethod = MethodSpec.overriding(methodElement)
-                        .addStatement("super.$L($L)", methodElement.getSimpleName(), methodParameters(methodElement))
-                        .build();
-
-                MethodSpec newMethod = MethodSpec.overriding(methodElement)
-                        .addStatement(consoleOutput)
-                        .addCode(existingMethod.code)
-                        .returns(TypeName.get(methodElement.getReturnType()))
-                        .build();
-
-                TypeSpec newClass = TypeSpec.classBuilder(typeElement.getSimpleName().toString())
-                        .addModifiers(Modifier.PUBLIC)
-                        .addMethod(newMethod)
-                        .build();
-
-                JavaFile javaFile = JavaFile.builder(packageName, newClass)
-                        .build();
-
-                // Versuche den Code zu ersetzen
+                ExecutableElement method = (ExecutableElement) element;
                 try {
-                    String fileName = packageName + "." + typeElement.getSimpleName() + ".java";
-                    replaceFileContent(fileName, javaFile.toString());
-                    processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "Code für " + methodName + " generiert");
+                    addPrintStatement(method);
                 } catch (IOException e) {
-                    processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Fehler beim Ersetzen des Codes: " + e.getMessage());
+                    processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.toString(), element);
                 }
             }
         }
         return true;
     }
 
-    private void replaceFileContent(String fileName, String newContent) throws IOException {
-        File file = new File(fileName);
+    private void addPrintStatement(ExecutableElement method) throws IOException {
+        Filer filer = processingEnv.getFiler();
+        String className = method.getEnclosingElement().getSimpleName().toString();
+        String methodName = method.getSimpleName().toString();
 
-        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            writer.print(newContent);
+        // Öffne die Datei zum Schreiben
+        FileObject fileObject = filer.createResource(StandardLocation.SOURCE_OUTPUT, "", className + "Generated");
+        try (PrintWriter writer = new PrintWriter(fileObject.openWriter())) {
+            // Schreibe den Originalcode
+            String docComment = processingEnv.getElementUtils().getDocComment(method);
+            if (docComment != null) {
+                writer.println("/* Original comment */");
+                writer.println(docComment);
+            }
+            writer.println(method);
+            writer.println();
+
+            // Schreibe den generierten Code
+            writer.println("System.out.println(\"Method " + className + "." + methodName + "() is executed.\");");
         }
-    }
-
-    private String methodParameters(ExecutableElement methodElement) {
-        return methodElement.getParameters().stream()
-                .map(parameter -> parameter.getSimpleName().toString())
-                .collect(joining(", "));
-    }
-
-    private String getPackageName(TypeElement typeElement) {
-        return processingEnv.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
     }
 }
