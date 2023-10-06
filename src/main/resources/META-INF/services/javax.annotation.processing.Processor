@@ -1,1 +1,2 @@
 io.github.honoriuss.springexceptiontoolset.exceptions.annotations.ExceptionProcessor
+io.github.honoriuss.springexceptiontoolset.exceptions.annotations.ExceptionInterfaceProcessor

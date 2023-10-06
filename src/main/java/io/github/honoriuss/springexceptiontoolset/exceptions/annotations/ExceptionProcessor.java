@@ -38,14 +38,14 @@ import java.io.*;
 
 import static java.util.stream.Collectors.joining;
 
-@SupportedAnnotationTypes("*")
+@SupportedAnnotationTypes("io.github.honoriuss.springexceptiontoolset.exceptions.annotations.ExceptionAnnotation")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
-@AutoService(Processor.class)
+@AutoService(ExceptionProcessor.class)
 public class ExceptionProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        System.out.println("Halloooo");
         for (Element element : roundEnv.getElementsAnnotatedWith(ExceptionAnnotation.class)) {
+            System.out.println("Halloooo");
             if (element.getKind() == ElementKind.METHOD) {
                 ExecutableElement method = (ExecutableElement) element;
                 try {
